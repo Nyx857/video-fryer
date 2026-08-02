@@ -1,0 +1,175 @@
+/* 全损视频生成器 - 响应式样式(与 image-compressor 同一设计语言) */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary: #2f6fed;
+  --primary-dark: #1f56c4;
+  --bg: #f5f7fa;
+  --card: #ffffff;
+  --text: #1f2937;
+  --text-muted: #6b7280;
+  --border: #e5e7eb;
+  --green: #16a34a;
+  --red: #dc2626;
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
+}
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ---- 头部 ---- */
+.site-header {
+  text-align: center;
+  padding: 2rem 1rem 1rem;
+}
+.site-header h1 { font-size: 1.6rem; margin-bottom: .3rem; }
+.tagline { color: var(--text-muted); font-size: .95rem; }
+.tagline strong { color: var(--green); }
+
+/* ---- 主容器 ---- */
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* ---- 通用按钮 ---- */
+.btn {
+  display: inline-block;
+  border: none;
+  border-radius: 10px;
+  padding: .7rem 1.4rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background .15s, transform .05s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:active { transform: scale(.97); }
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  font-size: 1.1rem;
+  padding: .85rem 2rem;
+}
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-secondary {
+  background: #fff;
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
+}
+.btn-secondary:hover { background: #eef3fe; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+/* ---- 上传区 ---- */
+.upload-zone {
+  background: var(--card);
+  border: 2px dashed #c3ccd9;
+  border-radius: var(--radius);
+  padding: 2.5rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+  box-shadow: var(--shadow);
+}
+.upload-zone.dragover {
+  border-color: var(--primary);
+  background: #eef3fe;
+}
+.upload-zone.disabled { pointer-events: none; opacity: .55; }
+.upload-icon { font-size: 3rem; line-height: 1; }
+.upload-title { font-size: 1.15rem; margin: .8rem 0 .3rem; font-weight: 600; }
+.upload-hint { color: var(--text-muted); font-size: .9rem; margin-bottom: 1.2rem; }
+
+/* ---- 面板/进度区 ---- */
+.panel {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.2rem 1.2rem 1.4rem;
+  margin-top: 1.2rem;
+}
+.panel h2, .results-head h2 { font-size: 1.1rem; margin-bottom: .8rem; }
+
+.progress-bar {
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: .8rem;
+}
+.progress-bar-inner {
+  height: 100%;
+  width: 0;
+  background: var(--primary);
+  transition: width .2s;
+}
+.progress-text { color: var(--text-muted); font-size: .9rem; }
+.progress-text.error { color: var(--red); margin-top: .4rem; }
+
+/* ---- 结果区 ---- */
+.results { margin-top: 1.2rem; }
+.results-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .6rem;
+  margin-bottom: .4rem;
+}
+.size-compare { color: var(--text-muted); font-size: .9rem; margin-bottom: .8rem; }
+.size-compare strong { color: var(--green); font-weight: 600; }
+.size-compare .size-old { text-decoration: line-through; }
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: .9rem;
+}
+@media (min-width: 640px) {
+  .compare-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.compare-item {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.compare-item figcaption {
+  font-size: .9rem;
+  font-weight: 600;
+  padding: .6rem .9rem;
+  border-bottom: 1px solid var(--border);
+}
+.compare-item video {
+  display: block;
+  width: 100%;
+  max-height: 320px;
+  background: #000;
+}
+
+/* ---- 底部提示 ---- */
+.footer-note {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: .82rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.hidden { display: none !important; }
+
+/* ---- 小屏微调 ---- */
+@media (max-width: 480px) {
+  .site-header h1 { font-size: 1.35rem; }
+  .results-head .btn { width: 100%; }
+}

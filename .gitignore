@@ -1,0 +1,11 @@
+# 测试依赖(仅本地实测用,不影响部署)
+test/node_modules/
+test/package.json
+test/package-lock.json
+
+# 测试产物
+test/fixtures/shots/
+test/fixtures/out_*.mp4
+
+.DS_Store
+vendor/ffmpeg/ffmpeg-core.wasm

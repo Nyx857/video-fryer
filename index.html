@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全损视频生成器 - 让视频被压缩一万次</title>
+<meta name="description" content="免费在线全损视频生成器:上传视频,把它处理成全损画质 + 收音机烂音,下载后整蛊朋友。视频在浏览器本地处理,不会上传到任何服务器。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <h1>🎬 全损视频生成器</h1>
+  <p class="tagline">让视频「被压缩一万次」· 视频在本地处理,<strong>不上传</strong> · 免费 · 无需注册</p>
+</header>
+
+<main class="container">
+
+  <!-- 上传区 -->
+  <section class="upload-zone" id="uploadZone" aria-label="上传视频">
+    <input type="file" id="fileInput" accept="video/*" hidden>
+    <div class="upload-inner">
+      <div class="upload-icon">📼</div>
+      <p class="upload-title">点击选择视频,或拖拽到此处</p>
+      <p class="upload-hint">支持 mp4 / mov / mkv / webm 等,≤ 3 分钟、≤ 200MB</p>
+      <button type="button" class="btn btn-primary" id="pickBtn">选择视频</button>
+    </div>
+  </section>
+
+  <!-- 进度区 -->
+  <section class="panel hidden" id="progressPanel">
+    <h2 id="progressTitle">正在处理…</h2>
+    <div class="progress-bar" id="progressBarWrap">
+      <div class="progress-bar-inner" id="progressBarInner"></div>
+    </div>
+    <p class="progress-text" id="progressText">准备中…</p>
+    <p class="progress-text error hidden" id="errorText"></p>
+    <button type="button" class="btn btn-secondary hidden" id="cancelBtn">取消</button>
+  </section>
+
+  <!-- 结果区 -->
+  <section class="results hidden" id="resultsSection">
+    <div class="results-head">
+      <h2>处理结果</h2>
+      <button type="button" class="btn btn-primary" id="downloadBtn">⬇ 下载全损视频</button>
+    </div>
+    <p class="size-compare" id="sizeCompare"></p>
+    <div class="compare-grid">
+      <figure class="compare-item">
+        <figcaption>原片</figcaption>
+        <video id="origVideo" controls playsinline></video>
+      </figure>
+      <figure class="compare-item">
+        <figcaption>全损版</figcaption>
+        <video id="friedVideo" controls playsinline></video>
+      </figure>
+    </div>
+  </section>
+
+  <p class="footer-note">提示:所有处理都在你的浏览器本地完成,视频不会上传到任何服务器,可以放心整蛊。</p>
+
+</main>
+
+<script type="module" src="fry.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
