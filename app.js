@@ -18,6 +18,7 @@ import { loadEngine, fryVideo, terminateEngine } from './fry.js';
   const cancelBtn = $('cancelBtn');
   const resultsSection = $('resultsSection');
   const downloadBtn = $('downloadBtn');
+  const saveBtn = $('saveBtn');
   const sizeCompare = $('sizeCompare');
   const origVideo = $('origVideo');
   const friedVideo = $('friedVideo');
@@ -206,8 +207,8 @@ import { loadEngine, fryVideo, terminateEngine } from './fry.js';
     terminateEngine();
   });
 
-  // ---- 下载 ----
-  downloadBtn.addEventListener('click', () => {
+  // ---- 下载(保存到文件) ----
+  function triggerDownload() {
     if (!resultBlob) return;
     const base = (currentFile && currentFile.name) ? currentFile.name.replace(/\.\w+$/, '') : 'video';
     const a = document.createElement('a');
@@ -217,5 +218,24 @@ import { loadEngine, fryVideo, terminateEngine } from './fry.js';
     a.click();
     a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+  }
+
+  downloadBtn.addEventListener('click', triggerDownload);
+
+  // ---- 保存到相册(手机端):Web Share API,弹系统分享面板选"存储到照片/视频" ----
+  saveBtn.addEventListener('click', async () => {
+    if (!resultBlob) return;
+    const base = (currentFile && currentFile.name) ? currentFile.name.replace(/\.\w+$/, '') : 'video';
+    const file = new File([resultBlob], base + '_全损.mp4', { type: 'video/mp4' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], title: '全损视频' });
+        return; // 用户选了"存储到照片"或分享给了朋友,完成
+      } catch (e) {
+        if (e && e.name === 'AbortError') return; // 用户取消分享
+        // 其他错误(如网络):回退到普通下载
+      }
+    }
+    triggerDownload();
   });
 })();
