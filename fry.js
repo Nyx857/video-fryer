@@ -107,17 +107,17 @@ export async function fryVideo(file, { onProgress, onLoadProgress } = {}) {
     const data = new Uint8Array(await file.arrayBuffer());
     await f.writeFile(inputName, data);
 
-    // 全损滤镜(v4 老照片版):
-    //   视频:缩到 320 → 8fps 掉帧 → 噪点 → sepia 棕褐 → 褪色低对比 → 暗角 → 低码率
-    //   音频:2.5x 增益 → 忽大忽小拉满 → 狠削波 → 11025Hz 单声道 24k 极糙
+    // 全损滤镜(v6 保留色彩的老照片版):
+    //   视频:缩到 320 → 8fps 掉帧 → 噪点 → 暖色调泛黄(保留原色,非全 sepia)→ 轻暗角 → 低码率
+    //   音频:1.5x 增益 → tremolo 忽大忽小 → alimiter 只防爆音不压平波动 → 低采样率
     const args = [
       '-i', inputName,
       '-vf', 'scale=320:-2,fps=8,noise=alls=15:allf=t,'
-        + 'colorchannelmixer=.393:.769:.189:0:.349:.686:.168:0:.272:.534:.131,'
-        + 'eq=saturation=0.6:contrast=0.85,'
+        + 'colorchannelmixer=rr=1.12:gg=1.03:bb=0.72,'
+        + 'eq=saturation=0.85:contrast=0.88,'
         + 'vignette=PI/4.5',
       '-b:v', '150k',
-      '-af', 'volume=2.5,tremolo=f=1.5:d=1.0,alimiter=limit=0.1',
+      '-af', 'volume=1.5,tremolo=f=1.2:d=0.85,alimiter=limit=0.85',
       '-ar', '11025',
       '-ac', '1',
       '-b:a', '24k',
