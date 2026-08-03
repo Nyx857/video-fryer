@@ -21,6 +21,10 @@ import { loadEngine, fryVideo, terminateEngine } from './fry.js';
   const saveBtn = $('saveBtn');
   const actionsRow = $('actionsRow');
   const actionsHint = $('actionsHint');
+  const syncWrap = $('syncWrap');
+  const syncToggle = $('syncToggle');
+  const origMeta = $('origMeta');
+  const friedMeta = $('friedMeta');
   const sizeCompare = $('sizeCompare');
   const origVideo = $('origVideo');
   const friedVideo = $('friedVideo');
@@ -182,6 +186,7 @@ import { loadEngine, fryVideo, terminateEngine } from './fry.js';
       downloadBtn.disabled = false;
       resultsSection.classList.remove('hidden');
       progressPanel.classList.add('hidden');
+      syncWrap.classList.remove('hidden');
       positionButtons();
     } catch (e) {
       if (cancelled) return;
@@ -208,6 +213,52 @@ import { loadEngine, fryVideo, terminateEngine } from './fry.js';
     cancelled = true;
     cancelBtn.disabled = true;
     terminateEngine();
+  });
+
+  function formatTime(sec) {
+    sec = Math.round(sec || 0);
+    const m = Math.floor(sec / 60), s = sec % 60;
+    return m > 0 ? m + ':' + String(s).padStart(2, '0') : s + 's';
+  }
+
+  // ---- 双视频播放控制:默认互斥(播放一个自动暂停另一个,防同时出声);"同步对比"开启后联动播放/暂停/进度 ----
+  const videos = [origVideo, friedVideo];
+  let syncing = false;
+  videos.forEach((v) => {
+    const other = v === origVideo ? friedVideo : origVideo;
+    v.addEventListener('play', () => {
+      if (syncing) return;
+      if (syncToggle.checked) {
+        syncing = true;
+        other.play().catch(() => {});
+        syncing = false;
+      } else {
+        other.pause();
+      }
+    });
+    v.addEventListener('pause', () => {
+      if (syncing) return;
+      if (syncToggle.checked) {
+        syncing = true;
+        other.pause();
+        syncing = false;
+      }
+    });
+    v.addEventListener('seeked', () => {
+      if (syncing) return;
+      if (syncToggle.checked) {
+        syncing = true;
+        other.currentTime = v.currentTime;
+        syncing = false;
+      }
+    });
+    // 分辨率 + 时长角标
+    v.addEventListener('loadedmetadata', () => {
+      const el = v === origVideo ? origMeta : friedMeta;
+      if (v.videoWidth && v.videoHeight) {
+        el.textContent = v.videoWidth + '×' + v.videoHeight + ' · ' + formatTime(v.duration);
+      }
+    });
   });
 
   /* 设备判断:手机=触屏窄屏;桌面 Chrome 也支持 share,必须用 IS_MOBILE 守卫,否则桌面误弹分享面板 */

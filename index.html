@@ -42,16 +42,26 @@
   <section class="results hidden" id="resultsSection">
     <div class="results-head">
       <h2>处理结果</h2>
+      <label class="sync-toggle" id="syncWrap" hidden>
+        <input type="checkbox" id="syncToggle">
+        <span>🔁 同步对比</span>
+      </label>
     </div>
     <p class="size-compare" id="sizeCompare"></p>
     <div class="compare-grid">
       <figure class="compare-item">
-        <figcaption>原片</figcaption>
-        <video id="origVideo" controls playsinline></video>
+        <figcaption>
+          <span class="fig-title">原片</span>
+          <span class="fig-meta" id="origMeta"></span>
+        </figcaption>
+        <video id="origVideo" controls playsinline preload="metadata"></video>
       </figure>
       <figure class="compare-item">
-        <figcaption>全损版</figcaption>
-        <video id="friedVideo" controls playsinline></video>
+        <figcaption>
+          <span class="fig-title">全损版</span>
+          <span class="fig-meta" id="friedMeta"></span>
+        </figcaption>
+        <video id="friedVideo" controls playsinline preload="metadata"></video>
       </figure>
     </div>
     <div class="results-actions" id="actionsRow">

@@ -146,10 +146,24 @@ body {
   overflow: hidden;
 }
 .compare-item figcaption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .6rem;
   font-size: .9rem;
   font-weight: 600;
   padding: .6rem .9rem;
   border-bottom: 1px solid var(--border);
+}
+.fig-title { font-size: .95rem; }
+.fig-meta {
+  font-size: .78rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  background: #f0f2f5;
+  border-radius: 6px;
+  padding: .12rem .5rem;
+  white-space: nowrap;
 }
 .compare-item video {
   display: block;
@@ -157,6 +171,25 @@ body {
   max-height: 320px;
   background: #000;
 }
+
+/* ---- 同步对比开关 ---- */
+.sync-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  font-size: .88rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  padding: .35rem .7rem;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  background: #fff;
+  transition: border-color .15s, color .15s;
+}
+.sync-toggle:hover { border-color: var(--primary); }
+.sync-toggle input { accent-color: var(--primary); cursor: pointer; }
 
 /* ---- 操作按钮(视频下方,主次分明) ---- */
 .results-actions {
