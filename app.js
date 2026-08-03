@@ -19,6 +19,8 @@ import { loadEngine, fryVideo, terminateEngine } from './fry.js';
   const resultsSection = $('resultsSection');
   const downloadBtn = $('downloadBtn');
   const saveBtn = $('saveBtn');
+  const actionsRow = $('actionsRow');
+  const actionsHint = $('actionsHint');
   const sizeCompare = $('sizeCompare');
   const origVideo = $('origVideo');
   const friedVideo = $('friedVideo');
@@ -180,6 +182,7 @@ import { loadEngine, fryVideo, terminateEngine } from './fry.js';
       downloadBtn.disabled = false;
       resultsSection.classList.remove('hidden');
       progressPanel.classList.add('hidden');
+      positionButtons();
     } catch (e) {
       if (cancelled) return;
       console.error(e);
@@ -206,6 +209,31 @@ import { loadEngine, fryVideo, terminateEngine } from './fry.js';
     cancelBtn.disabled = true;
     terminateEngine();
   });
+
+  /* 主次按钮:手机(能存相册)主推"保存到相册",电脑主推"下载" */
+  function positionButtons() {
+    let shareOk = false;
+    try {
+      shareOk = !!(navigator.canShare && navigator.canShare({
+        files: [new File([new Uint8Array([1])], 't.mp4', { type: 'video/mp4' })]
+      }));
+    } catch (e) { /* ignore */ }
+    const mobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const mainIsSave = shareOk && mobile;
+
+    saveBtn.classList.toggle('btn-primary', mainIsSave);
+    saveBtn.classList.toggle('btn-secondary', !mainIsSave);
+    downloadBtn.classList.toggle('btn-primary', !mainIsSave);
+    downloadBtn.classList.toggle('btn-secondary', mainIsSave);
+
+    // 主按钮排第一(上方)
+    actionsRow.appendChild(mainIsSave ? saveBtn : downloadBtn);
+    actionsRow.appendChild(mainIsSave ? downloadBtn : saveBtn);
+
+    actionsHint.textContent = mainIsSave
+      ? '手机推荐:保存到相册,直接进手机照片库'
+      : '电脑推荐:下载到文件;手机打开可存相册';
+  }
 
   // ---- 下载(保存到文件) ----
   function triggerDownload() {

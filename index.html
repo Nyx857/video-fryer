@@ -42,10 +42,6 @@
   <section class="results hidden" id="resultsSection">
     <div class="results-head">
       <h2>处理结果</h2>
-      <div class="results-actions">
-        <button type="button" class="btn btn-secondary" id="saveBtn">📱 保存到相册</button>
-        <button type="button" class="btn btn-primary" id="downloadBtn">⬇ 下载全损视频</button>
-      </div>
     </div>
     <p class="size-compare" id="sizeCompare"></p>
     <div class="compare-grid">
@@ -58,6 +54,11 @@
         <video id="friedVideo" controls playsinline></video>
       </figure>
     </div>
+    <div class="results-actions" id="actionsRow">
+      <button type="button" class="btn" id="saveBtn">📱 保存到相册</button>
+      <button type="button" class="btn" id="downloadBtn">⬇ 下载全损视频</button>
+    </div>
+    <p class="actions-hint" id="actionsHint"></p>
   </section>
 
   <p class="footer-note">提示:所有处理都在你的浏览器本地完成,视频不会上传到任何服务器,可以放心整蛊。</p>
