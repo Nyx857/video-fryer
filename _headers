@@ -1,4 +1,6 @@
 # 引擎文件内容固定(版本 0.12.6),设一年 immutable 缓存:首次下载后浏览器完全离线复用
+# Content-Type 设 text/javascript 触发 Cloudflare 自动 Brotli 压缩(wasm 二进制可压 ~50%,32MB→~13MB)
 # 注意:未来升级引擎时,必须改名(如 ffmpeg-core.v2.wasm.part.aa)强制刷新,否则浏览器沿用旧缓存
 /vendor/ffmpeg/*
   Cache-Control: public, max-age=31536000, immutable
+  Content-Type: text/javascript

@@ -1,0 +1,13 @@
+{
+  "name": "全损视频生成器",
+  "short_name": "视频全损器",
+  "description": "上传视频,变成被传了一万次的全损画质 + 老照片滤镜 + 收音机烂音,整蛊朋友",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f7fa",
+  "theme_color": "#2f6fed",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
