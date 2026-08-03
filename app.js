@@ -210,29 +210,32 @@ import { loadEngine, fryVideo, terminateEngine } from './fry.js';
     terminateEngine();
   });
 
-  /* 主次按钮:手机(能存相册)主推"保存到相册",电脑主推"下载" */
+  /* 设备判断:手机=触屏窄屏;桌面 Chrome 也支持 share,必须用 IS_MOBILE 守卫,否则桌面误弹分享面板 */
+  const IS_MOBILE = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
+    || (navigator.maxTouchPoints > 0 && window.innerWidth < 768);
+
+  /* 主次按钮:按设备分开设计 —— 手机只推"保存到相册",桌面只显示"下载" */
   function positionButtons() {
-    let shareOk = false;
-    try {
-      shareOk = !!(navigator.canShare && navigator.canShare({
-        files: [new File([new Uint8Array([1])], 't.mp4', { type: 'video/mp4' })]
-      }));
-    } catch (e) { /* ignore */ }
-    const mobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    const mainIsSave = shareOk && mobile;
-
-    saveBtn.classList.toggle('btn-primary', mainIsSave);
-    saveBtn.classList.toggle('btn-secondary', !mainIsSave);
-    downloadBtn.classList.toggle('btn-primary', !mainIsSave);
-    downloadBtn.classList.toggle('btn-secondary', mainIsSave);
-
-    // 主按钮排第一(上方)
-    actionsRow.appendChild(mainIsSave ? saveBtn : downloadBtn);
-    actionsRow.appendChild(mainIsSave ? downloadBtn : saveBtn);
-
-    actionsHint.textContent = mainIsSave
-      ? '手机推荐:保存到相册,直接进手机照片库'
-      : '电脑推荐:下载到文件;手机打开可存相册';
+    if (IS_MOBILE) {
+      // 手机:保存到相册(主)+ 下载到文件(次)
+      saveBtn.classList.remove('hidden');
+      saveBtn.classList.add('btn-primary');
+      saveBtn.classList.remove('btn-secondary');
+      downloadBtn.classList.add('btn-secondary');
+      downloadBtn.classList.remove('btn-primary');
+      downloadBtn.textContent = '⬇ 下载到文件';
+      actionsRow.appendChild(saveBtn);
+      actionsRow.appendChild(downloadBtn);
+      actionsHint.textContent = '推荐存相册,直接进手机照片库';
+    } else {
+      // 桌面:只有下载,隐藏相册按钮(桌面没有相册概念)
+      saveBtn.classList.add('hidden');
+      downloadBtn.classList.add('btn-primary');
+      downloadBtn.classList.remove('btn-secondary');
+      downloadBtn.textContent = '⬇ 下载全损视频';
+      actionsRow.appendChild(downloadBtn);
+      actionsHint.textContent = '';
+    }
   }
 
   // ---- 下载(保存到文件) ----
@@ -250,9 +253,11 @@ import { loadEngine, fryVideo, terminateEngine } from './fry.js';
 
   downloadBtn.addEventListener('click', triggerDownload);
 
-  // ---- 保存到相册(手机端):Web Share API,弹系统分享面板选"存储到照片/视频" ----
+  // ---- 保存到相册(仅手机):Web Share API,弹系统分享面板选"存储到照片/视频" ----
   saveBtn.addEventListener('click', async () => {
     if (!resultBlob) return;
+    // 桌面不弹分享(桌面无相册概念),按钮在桌面已隐藏,这里双保险
+    if (!IS_MOBILE) { triggerDownload(); return; }
     const base = (currentFile && currentFile.name) ? currentFile.name.replace(/\.\w+$/, '') : 'video';
     const file = new File([resultBlob], base + '_全损.mp4', { type: 'video/mp4' });
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
