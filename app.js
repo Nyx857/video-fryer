@@ -21,8 +21,6 @@ import { loadEngine, fryVideo, terminateEngine } from './fry.js';
   const saveBtn = $('saveBtn');
   const actionsRow = $('actionsRow');
   const actionsHint = $('actionsHint');
-  const syncWrap = $('syncWrap');
-  const syncToggle = $('syncToggle');
   const origMeta = $('origMeta');
   const friedMeta = $('friedMeta');
   const sizeCompare = $('sizeCompare');
@@ -186,7 +184,6 @@ import { loadEngine, fryVideo, terminateEngine } from './fry.js';
       downloadBtn.disabled = false;
       resultsSection.classList.remove('hidden');
       progressPanel.classList.add('hidden');
-      syncWrap.classList.remove('hidden');
       positionButtons();
     } catch (e) {
       if (cancelled) return;
@@ -221,36 +218,12 @@ import { loadEngine, fryVideo, terminateEngine } from './fry.js';
     return m > 0 ? m + ':' + String(s).padStart(2, '0') : s + 's';
   }
 
-  // ---- 双视频播放控制:默认互斥(播放一个自动暂停另一个,防同时出声);"同步对比"开启后联动播放/暂停/进度 ----
+  // ---- 双视频互斥播放:播放一个自动暂停另一个,防同时出声 ----
   const videos = [origVideo, friedVideo];
-  let syncing = false;
   videos.forEach((v) => {
     const other = v === origVideo ? friedVideo : origVideo;
     v.addEventListener('play', () => {
-      if (syncing) return;
-      if (syncToggle.checked) {
-        syncing = true;
-        other.play().catch(() => {});
-        syncing = false;
-      } else {
-        other.pause();
-      }
-    });
-    v.addEventListener('pause', () => {
-      if (syncing) return;
-      if (syncToggle.checked) {
-        syncing = true;
-        other.pause();
-        syncing = false;
-      }
-    });
-    v.addEventListener('seeked', () => {
-      if (syncing) return;
-      if (syncToggle.checked) {
-        syncing = true;
-        other.currentTime = v.currentTime;
-        syncing = false;
-      }
+      other.pause();
     });
     // 分辨率 + 时长角标
     v.addEventListener('loadedmetadata', () => {

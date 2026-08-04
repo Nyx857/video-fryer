@@ -107,12 +107,12 @@ export async function fryVideo(file, { onProgress, onLoadProgress } = {}) {
     const data = new Uint8Array(await file.arrayBuffer());
     await f.writeFile(inputName, data);
 
-    // 全损滤镜(v6 保留色彩的老照片版):
-    //   视频:缩到 320 → 8fps 掉帧 → 噪点 → 暖色调泛黄(保留原色,非全 sepia)→ 轻暗角 → 低码率
+    // 全损滤镜(v12 提速版):
+    //   视频:fps=8 先降帧(避免对每一帧缩放,高帧率输入省几倍滤镜开销)→ 快速缩放 320 → 噪点 → 暖色调 → 低码率
     //   音频:1.5x 增益 → tremolo 忽大忽小 → alimiter 只防爆音不压平波动 → 低采样率
     const args = [
       '-i', inputName,
-      '-vf', 'scale=320:-2,fps=8,noise=alls=15:allf=t,'
+      '-vf', 'fps=8,scale=320:-2:flags=fast_bilinear,noise=alls=15:allf=t,'
         + 'colorchannelmixer=rr=1.12:gg=1.03:bb=0.72,'
         + 'eq=saturation=0.85:contrast=0.88,'
         + 'vignette=PI/4.5',

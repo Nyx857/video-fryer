@@ -172,25 +172,6 @@ body {
   background: #000;
 }
 
-/* ---- 同步对比开关 ---- */
-.sync-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: .35rem;
-  font-size: .88rem;
-  color: var(--text-muted);
-  cursor: pointer;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  padding: .35rem .7rem;
-  border: 1.5px solid var(--border);
-  border-radius: 999px;
-  background: #fff;
-  transition: border-color .15s, color .15s;
-}
-.sync-toggle:hover { border-color: var(--primary); }
-.sync-toggle input { accent-color: var(--primary); cursor: pointer; }
-
 /* ---- 操作按钮(视频下方,主次分明) ---- */
 .results-actions {
   display: flex;
