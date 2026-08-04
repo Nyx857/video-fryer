@@ -116,6 +116,7 @@ export async function fryVideo(file, { onProgress, onLoadProgress } = {}) {
         + 'colorchannelmixer=rr=1.12:gg=1.03:bb=0.72,'
         + 'eq=saturation=0.85:contrast=0.88,'
         + 'vignette=PI/4.5',
+      '-preset', 'ultrafast',
       '-b:v', '150k',
       '-af', 'volume=1.5,tremolo=f=1.2:d=0.85,alimiter=limit=0.85',
       '-ar', '11025',
