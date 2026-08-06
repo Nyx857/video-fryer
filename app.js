@@ -244,8 +244,8 @@ import { loadEngine, fryVideo, terminateEngine } from './fry.js';
       // 手机:保存到相册(主)+ 下载到文件(次)
       saveBtn.classList.remove('hidden');
       saveBtn.classList.add('btn-primary');
-      saveBtn.classList.remove('btn-secondary');
-      downloadBtn.classList.add('btn-secondary');
+      saveBtn.classList.remove('btn-ghost');
+      downloadBtn.classList.add('btn-ghost');
       downloadBtn.classList.remove('btn-primary');
       downloadBtn.textContent = '⬇ 下载到文件';
       actionsRow.appendChild(saveBtn);
@@ -255,7 +255,7 @@ import { loadEngine, fryVideo, terminateEngine } from './fry.js';
       // 桌面:只有下载,隐藏相册按钮(桌面没有相册概念)
       saveBtn.classList.add('hidden');
       downloadBtn.classList.add('btn-primary');
-      downloadBtn.classList.remove('btn-secondary');
+      downloadBtn.classList.remove('btn-ghost');
       downloadBtn.textContent = '⬇ 下载全损视频';
       actionsRow.appendChild(downloadBtn);
       actionsHint.textContent = '';

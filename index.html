@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>全损视频生成器 - 让视频被压缩一万次</title>
 <meta name="description" content="免费在线全损视频生成器:上传视频,把它处理成全损画质 + 收音机烂音,下载后整蛊朋友。视频在浏览器本地处理,不会上传到任何服务器。">
-<meta name="theme-color" content="#2f6fed">
+<meta name="theme-color" content="#0f766e">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -13,21 +13,54 @@
 </head>
 <body>
 
-<header class="site-header">
-  <h1>🎬 全损视频生成器</h1>
-  <p class="tagline">让视频「被压缩一万次」· 视频在本地处理,<strong>不上传</strong> · 免费 · 无需注册</p>
-</header>
+<!-- 顶栏 -->
+<nav class="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="#" aria-label="全损视频生成器首页">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 5v14l11-7z" fill="#fff"/></svg>
+        <span class="flicker"></span>
+      </span>
+      <span class="logo-name">全损视频生成器<span class="zh">· 整蛊神器</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#how">怎么玩</a>
+      <a href="#privacy">隐私</a>
+      <a class="nav-cta" href="#uploadZone"><button class="btn btn-primary btn-sm">开始整蛊</button></a>
+    </div>
+  </div>
+</nav>
 
 <main class="container">
 
-  <!-- 上传区 -->
-  <section class="upload-zone" id="uploadZone" aria-label="上传视频">
-    <input type="file" id="fileInput" accept="video/*" hidden>
-    <div class="upload-inner">
-      <div class="upload-icon">📼</div>
-      <p class="upload-title">点击选择视频,或拖拽到此处</p>
-      <p class="upload-hint">支持 mp4 / mov / mkv / webm 等,≤ 3 分钟、≤ 200MB</p>
-      <button type="button" class="btn btn-primary" id="pickBtn">选择视频</button>
+  <!-- Hero:标题 + 上传区 -->
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="hero-eyebrow"><span class="dot"></span>📼 整蛊神器 · 免费 · 无需注册</span>
+        <h1>让视频「<em>被传一万次</em>」</h1>
+        <p class="hero-sub">全损画质 + 清朝老照片滤镜 + 收音机烂音，一键生成，下载发给朋友。<strong>全程本地处理，不上传服务器。</strong></p>
+        <div class="hero-ctas">
+          <button class="btn btn-primary btn-lg" onclick="document.getElementById('pickBtn').click()">🎬 上传视频开火</button>
+        </div>
+        <div class="hero-trust">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z" stroke="currentColor" stroke-width="2"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2"/></svg>
+          <span>视频不出你的浏览器 · 不用注册 · 用完即走</span>
+        </div>
+      </div>
+
+      <div class="hero-stage">
+        <!-- 上传区 -->
+        <section class="upload-zone" id="uploadZone" aria-label="上传视频">
+          <input type="file" id="fileInput" accept="video/*" hidden>
+          <div class="upload-inner">
+            <div class="upload-icon">📼</div>
+            <p class="upload-title">投进录像机，开始整蛊</p>
+            <p class="upload-hint">点击选择视频或拖拽到此处 · mp4 / mov / mkv / webm · ≤3 分钟 / 200MB</p>
+            <button type="button" class="btn btn-primary btn-lg" id="pickBtn">选择视频</button>
+          </div>
+        </section>
+      </div>
     </div>
   </section>
 
@@ -39,7 +72,7 @@
     </div>
     <p class="progress-text" id="progressText">准备中…</p>
     <p class="progress-text error hidden" id="errorText"></p>
-    <button type="button" class="btn btn-secondary hidden" id="cancelBtn">取消</button>
+    <button type="button" class="btn btn-ghost btn-sm hidden" id="cancelBtn">取消</button>
   </section>
 
   <!-- 结果区 -->
@@ -65,13 +98,26 @@
       </figure>
     </div>
     <div class="results-actions" id="actionsRow">
-      <button type="button" class="btn" id="saveBtn">📱 保存到相册</button>
-      <button type="button" class="btn" id="downloadBtn">⬇ 下载全损视频</button>
+      <button type="button" class="btn btn-primary btn-lg" id="saveBtn">📱 保存到相册</button>
+      <button type="button" class="btn btn-ghost" id="downloadBtn">⬇ 下载全损视频</button>
     </div>
     <p class="actions-hint" id="actionsHint"></p>
   </section>
 
-  <p class="footer-note">提示:所有处理都在你的浏览器本地完成,视频不会上传到任何服务器,可以放心整蛊。</p>
+  <!-- 底部信息 -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div id="how" class="footer-col">
+        <h3>怎么玩</h3>
+        <p>上传视频 → 自动变成全损画质 + 老照片滤镜 + 烂音 → 对比预览 → 存相册/下载 → 发给朋友。</p>
+      </div>
+      <div id="privacy" class="footer-col">
+        <h3>隐私</h3>
+        <p class="footer-note-inline">所有处理都在你的浏览器本地完成，视频不会上传到任何服务器，可以放心整蛊。</p>
+      </div>
+    </div>
+    <p class="footer-note">仅供娱乐，请对朋友手下留情 😄</p>
+  </footer>
 
 </main>
 
